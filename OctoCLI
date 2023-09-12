@@ -1,0 +1,4 @@
+- name: Install Octopus CLI 🐙
+  uses: OctopusDeploy/install-octopus-cli-action@v3
+  with:
+    version: '*'
