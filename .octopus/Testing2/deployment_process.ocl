@@ -1,0 +1,186 @@
+step "run-a-script" {
+    name = "Run a Script"
+    package_requirement = "AfterPackageAcquisition"
+    properties = {
+        Octopus.Action.TargetRoles = "Web"
+    }
+
+    action {
+        action_type = "Octopus.Script"
+        is_disabled = true
+        properties = {
+            Octopus.Action.RunOnServer = "false"
+            Octopus.Action.Script.ScriptBody = "write-host \"Hello World!\""
+            Octopus.Action.Script.ScriptSource = "Inline"
+            Octopus.Action.Script.Syntax = "PowerShell"
+        }
+        worker_pool_variable = ""
+    }
+}
+
+step "run-a-script-2" {
+    name = "Run a Script 2"
+    properties = {
+        Octopus.Action.TargetRoles = "Web"
+    }
+
+    action {
+        action_type = "Octopus.Script"
+        is_disabled = true
+        properties = {
+            Octopus.Action.RunOnServer = "false"
+            Octopus.Action.Script.ScriptBody = "hostname"
+            Octopus.Action.Script.ScriptSource = "Inline"
+            Octopus.Action.Script.Syntax = "PowerShell"
+        }
+        worker_pool_variable = ""
+    }
+}
+
+step "run-a-script-3" {
+    name = "Run a Script 3"
+    properties = {
+        Octopus.Action.TargetRoles = "Web"
+    }
+
+    action {
+        action_type = "Octopus.Script"
+        is_disabled = true
+        properties = {
+            Octopus.Action.RunOnServer = "false"
+            Octopus.Action.Script.ScriptBody = "copy-item \"C:\\software\\test.txt\" \"C:\\Temp\""
+            Octopus.Action.Script.ScriptSource = "Inline"
+            Octopus.Action.Script.Syntax = "PowerShell"
+        }
+        worker_pool_variable = ""
+    }
+}
+
+step "run-a-script-4" {
+    name = "Run a Script 4"
+    properties = {
+        Octopus.Action.TargetRoles = "Web"
+    }
+
+    action {
+        action_type = "Octopus.Script"
+        is_disabled = true
+        properties = {
+            Octopus.Action.RunOnServer = "false"
+            Octopus.Action.Script.ScriptBody = <<-EOT
+                
+                $server = $OctopusParameters["Octopus.Machine.Hostname"]
+                $server2 = $OctopusParameters["Octopus.Machine.Name"]
+                
+                
+                new-psdrive -name "server" -psprovider FileSystem -Root "\\$server\C$"
+                
+                
+                #Get-ChildItem -Path "\\$server\C$\Software"
+                ls "\\$server\C$\Software\*.*" | Out-File "\\win2k12-srv4.icorp.local\Results\result.txt"
+                
+                
+                
+                remove-psdrive -Name "server" -force
+                #>
+                
+                write-host "Server is: ", $server
+                write-host "Server2 is: ", $Server2
+                EOT
+            Octopus.Action.Script.ScriptSource = "Inline"
+            Octopus.Action.Script.Syntax = "PowerShell"
+        }
+        worker_pool_variable = ""
+    }
+}
+
+step "run-a-script-4-1" {
+    name = "Run a Script 5"
+    properties = {
+        Octopus.Action.TargetRoles = "Web"
+    }
+
+    action {
+        action_type = "Octopus.Script"
+        is_disabled = true
+        properties = {
+            Octopus.Action.RunOnServer = "false"
+            Octopus.Action.Script.ScriptBody = <<-EOT
+                
+                $server = $OctopusParameters["Octopus.Machine.Hostname"]
+                
+                $Username
+                new-psdrive -name "server" -psprovider FileSystem -Root "\\$server\C$"
+                
+                
+                Get-ChildItem -Path "\\$server\C$\Software"
+                
+                remove-psdrive -Name "server" -force
+                
+                EOT
+            Octopus.Action.Script.ScriptSource = "Inline"
+            Octopus.Action.Script.Syntax = "PowerShell"
+        }
+        worker_pool_variable = ""
+    }
+}
+
+step "run-a-script-git-test" {
+    name = "Run a Script-git test"
+    properties = {
+        Octopus.Action.TargetRoles = "Web"
+    }
+
+    action {
+        action_type = "Octopus.Script"
+        properties = {
+            Octopus.Action.Package.DownloadOnTentacle = "False"
+            Octopus.Action.Package.FeedId = "orgfeed"
+            Octopus.Action.Package.PackageId = "ICorpORG/orgicorp"
+            Octopus.Action.RunOnServer = "false"
+            Octopus.Action.Script.ScriptFileName = "pstesting2.ps1"
+            Octopus.Action.Script.ScriptSource = "Package"
+        }
+        worker_pool_variable = ""
+
+        packages {
+            acquisition_location = "Server"
+            feed = "orgfeed"
+            package_id = "ICorpORG/orgicorp"
+            properties = {
+                SelectionMode = "immediate"
+            }
+        }
+    }
+}
+
+step "run-a-script-test2" {
+    name = "Run a Script-Test2"
+    properties = {
+        Octopus.Action.TargetRoles = "Web"
+    }
+
+    action {
+        action_type = "Octopus.Script"
+        environments = ["testenv"]
+        is_disabled = true
+        properties = {
+            Octopus.Action.Package.DownloadOnTentacle = "False"
+            Octopus.Action.Package.FeedId = "octopus-server-built-in"
+            Octopus.Action.Package.PackageId = "testing2"
+            Octopus.Action.RunOnServer = "false"
+            Octopus.Action.Script.ScriptFileName = "testing2.ps1"
+            Octopus.Action.Script.ScriptSource = "Package"
+        }
+        worker_pool_variable = ""
+
+        packages {
+            acquisition_location = "Server"
+            feed = "octopus-server-built-in"
+            package_id = "testing2"
+            properties = {
+                SelectionMode = "immediate"
+            }
+        }
+    }
+}
