@@ -37,3 +37,9 @@ jobs:
           echo test2 ${{ secrets.OCTOPUS_API_KEY }}
           echo ${{ secrets.OCTOPUS_API_KEY }} | sed 's/,/& /g'
 
+      # Use a GitHub Actions secret variable in a bash shell    
+      - name: Step 2 - GitHub Action if statement (true)
+        env: 
+          WHO_TO_TRUST: ${{ secrets.SECRET_TOKEN }}
+        if:  env.WHO_TO_TRUST == 'TrustNo1'
+        run: echo "I know what the secret token is!"
