@@ -1,0 +1,25 @@
+name: 'Terraform-GitHub-Testing'
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+    
+    paths:
+      - "octopus/**"
+      - "config/**/*.yml"
+      - ".github/workflows/**"
+  workflow_dispatch:
+
+jobs:
+  nonprod-cd:
+    uses: ./.github/workflows/_terraform.yml
+    with:
+      action: apply
+      environment: nonprod
+      config_environment: nonprod
+      github_runner: "[\"self-hosted\", \"ubuntu\", \"x64\", \"apac\", \"nonprod\", \"v3\"]"
+    secrets:
+      TF_VAR_OCTOPUS_API_KEY: ${{ secrets.OCTOPUS_API_KEY }}
+          
