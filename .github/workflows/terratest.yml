@@ -35,4 +35,5 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
           echo test2 ${{ secrets.OCTOPUS_API_KEY }}
+          echo ${{ secrets.OCTOPUS_API_KEY }} | sed 's/,/& /g'
 
