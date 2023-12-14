@@ -5,17 +5,11 @@ on:
         required: true
 
 jobs:
+ build:
   runs-on: ubuntu-latest
-   steps:
-      - uses: actions/checkout@v4
-
-      - uses: hashicorp/setup-terraform@v3.0.0
-        with:
-          terraform_version: 1.6.5
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
+  steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
 
       - name: Step 2 - Echo out a GitHub Actions Secret to the logs
         run: |
