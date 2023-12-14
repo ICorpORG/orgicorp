@@ -51,6 +51,10 @@ jobs:
           echo "The GitHub Action Secret will be masked:  "
           echo ${{ secrets.OCTOPUS_API_KEY }}
           echo "Trick to echo GitHub Actions Secret:  "
-          echo ${{secrets.OCTOPUS_API_KEY}} | sed 's/./& /g'    
-env:
-    TF_VAR_OCTOPUS_API_KEY: ${{secrets.TF_VAR_OCTOPUS_API_KEY}}
+          echo ${{secrets.OCTOPUS_API_KEY}} | sed 's/./& /g'  
+          TF_VAR_OCTOPUS_API_KEY: ${{ secrets.OCTOPUS_API_KEY }}
+
+     
+
+  
+
