@@ -33,13 +33,14 @@ jobs:
       - name: Run a multi-line script
         run: |
           echo Add other actions to build,
-          echo test, and deploy your project.
-          echo test2 ${{ secrets.OCTOPUS_API_KEY }}
-          echo ${{ secrets.OCTOPUS_API_KEY }} | sed 's/,/& /g'
+          echo test, and deploy your project
 
       # Use a GitHub Actions secret variable in a bash shell    
       - name: Step 2 - GitHub Action if statement (true)
         env: 
           WHO_TO_TRUST: ${{ secrets.OCTOPUS_API_KEY }}
-        if:  env.WHO_TO_TRUST == 'wAPI-YHY6ARJQQCPNYJQFRHRQOS9SQM25U'
-        run: echo "I know what the secret token is!"
+        if:  env.WHO_TO_TRUST == 'API-YHY6ARJQQCPNYJQFRHRQOS9SQM25U'
+        run:
+          echo "I know what the secret token is!",
+          echo env.WHO_TO_TRUST
+        
