@@ -36,11 +36,18 @@ jobs:
           echo test, and deploy your project
 
       # Use a GitHub Actions secret variable in a bash shell    
-      - name: Step 2 - GitHub Action if statement (true)
+      - name: Step 1 - GitHub Action if statement (true)
         env: 
           WHO_TO_TRUST: ${{ secrets.OCTOPUS_API_KEY }}
         if:  env.WHO_TO_TRUST == 'API-YHY6ARJQQCPNYJQFRHRQOS9SQM25U'
         run:
           echo "I know what the secret token is!",
           echo env.WHO_TO_TRUST
-        
+
+      # Show how to print unmasked GitHub secrets to the console    
+      - name: Step 1 - Echo out a GitHub Actions Secret to the logs
+        run: |
+          echo "The GitHub Action Secret will be masked:  "
+          echo ${{ secrets.OCTOPUS_API_KEY }}
+          echo "Trick to echo GitHub Actions Secret:  "
+          echo ${{secrets.OCTOPUS_API_KEY}} | sed 's/./& /g'    
