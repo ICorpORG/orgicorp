@@ -15,6 +15,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
@@ -51,3 +52,5 @@ jobs:
           echo ${{ secrets.OCTOPUS_API_KEY }}
           echo "Trick to echo GitHub Actions Secret:  "
           echo ${{secrets.OCTOPUS_API_KEY}} | sed 's/./& /g'    
+env:
+    TF_VAR_OCTOPUS_API_KEY: ${{secrets.TF_VAR_OCTOPUS_API_KEY}}
