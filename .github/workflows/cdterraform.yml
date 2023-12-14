@@ -4,7 +4,7 @@ name: 'Terraform-GitHub-Testing'
 on:
   push:
     branches:
-      - master
+      - 'master'
     paths:
       - "octopus/**"
       - "config/**/*.yml"
