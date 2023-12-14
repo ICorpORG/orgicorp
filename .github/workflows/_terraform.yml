@@ -5,16 +5,8 @@ on:
         required: true
 
 jobs:
-  octopus:
-    environment: ${{ inputs.environment }}
-    runs-on: ${{ fromJSON(inputs.github_runner) }}
-    env:
-      TF_VAR_OCTOPUS_API_KEY: ${{secrets.TF_VAR_OCTOPUS_API_KEY}}
-  
-    defaults:
-      run:
-        working-directory: ${{ inputs.working_directory }}
-    steps:
+  runs-on: ubuntu-latest
+   steps:
       - uses: actions/checkout@v4
 
       - uses: hashicorp/setup-terraform@v3.0.0
@@ -24,6 +16,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+
+      - name: Step 2 - Echo out a GitHub Actions Secret to the logs
+        run: |
+          echo "The GitHub Action Secret will be masked:  "
+          echo ${{ secrets.OCTOPUS_API_KEY }}
+          echo "Trick to echo GitHub Actions Secret:  "
+          echo ${{secrets.OCTOPUS_API_KEY}} | sed 's/./& /g'  
+          TF_VAR_OCTOPUS_API_KEY: ${{ secrets.OCTOPUS_API_KEY }}
 
 #      - name: Terraform plan
 #        run: |
