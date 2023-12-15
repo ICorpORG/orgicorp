@@ -32,7 +32,7 @@ jobs:
         working-directory: C:\Software\octopus-terraform\octopus
 
       - id: plan
-        run: terraform plan -no-color
+        run: terraform plan -no-color -out
         working-directory: C:\Software\octopus-terraform\octopus
       
     
