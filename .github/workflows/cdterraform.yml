@@ -13,8 +13,25 @@ on:
   workflow_dispatch:
 
 jobs:
-  nonprod-cd:
-    uses: ./.github/workflows/_terraform.yml
-    secrets:
-      TF_VAR_OCTOPUS_API_KEY: ${{ secrets.OCTOPUS_API_KEY }}
+  terraform:
+    # The type of runner that the job will run on
+    # runs-on: ubuntu-latest
+     runs-on: self-hosted
+     name: Terraform Job
+  #   uses: actions/checkout@v3
+   
+     steps:
+      - name: Test Terraform Init
+        id: init
+        run: terraform init
+
+      - name: Terraform Validate
+        id: val
+        run: terraform validate
+
+      - id: plan
+        run: terraform plan -no-color
+      
+    
+    
           
