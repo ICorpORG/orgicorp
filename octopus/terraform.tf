@@ -1,4 +1,8 @@
 terraform {
+  backend "local" {
+    path = "C:/software/tools/terraform.tfstate"
+
+  }
   required_providers {
     octopusdeploy = {
       source  = "OctopusDeployLabs/octopusdeploy"
@@ -8,6 +12,7 @@ terraform {
 }
 
 provider "octopusdeploy" {
-  address = "https://dev-octopus.cmc.local"
-  api_key = "API-CCMP0OAKVYUH0ORSYMOTMWDU9E5GPYXO"
+  address = "http://win2k12-srv4.icorp.local:8080"
+  api_key = "API-YHY6ARJQQCPNYJQFRHRQOS9SQM25U"
+  #api_key = var.OCTOPUS_API_KEY
 }
