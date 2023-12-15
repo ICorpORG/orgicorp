@@ -24,13 +24,16 @@ jobs:
       - name: Test Terraform Init
         id: init
         run: terraform init
+        working-directory: C:\Software\octopus-terraform\octopus
 
       - name: Terraform Validate
         id: val
         run: terraform validate
+        working-directory: C:\Software\octopus-terraform\octopus
 
       - id: plan
         run: terraform plan -no-color
+        working-directory: C:\Software\octopus-terraform\octopus
       
     
     
