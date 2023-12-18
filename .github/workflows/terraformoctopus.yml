@@ -15,9 +15,29 @@ on:
   workflow_dispatch:
 
 jobs:
-  terraform-b:
-    uses: ./.github/workflows/_terraform.yaml
-    with:
-      github-runner: "[\"self-hosted\"]"
-    secrets:
-      TF_VAR_OCTOPUS_API_KEY: ${{ secrets.OCTOPUS_API_KEY  }}
+  terraform:
+    # The type of runner that the job will run on
+    # runs-on: ubuntu-latest
+     runs-on: self-hosted
+     name: Terraform Job
+  #   uses: actions/checkout@v3
+   
+     steps:
+      - name: Test Terraform Init
+        id: init
+        run: terraform init
+        working-directory: C:\Software\octopus-terraform\octopus
+
+      - name: Terraform Validate
+        id: val
+        run: terraform validate
+        working-directory: C:\Software\octopus-terraform\octopus
+
+      - id: plan
+        run: terraform plan -no-color
+        working-directory: C:\Software\octopus-terraform\octopus
+
+      - id: apply
+        run: terraform apply -auto-approve
+        working-directory: C:\Software\octopus-terraform\octopus
+      
