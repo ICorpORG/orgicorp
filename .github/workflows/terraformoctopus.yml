@@ -2,11 +2,7 @@
 
 name: terraformoctopus
 
-on:
-  push:
-    branches: [ "main" ]
- ## pull_request:
- ##   branches: [ "main" ]
+on: push
     
     paths:
       - "octopus/**"
