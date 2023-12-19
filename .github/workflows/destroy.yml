@@ -1,0 +1,29 @@
+# This is a basic workflow to help you get started with Actions
+
+name: terraformoctopus destroy
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  terraform-destroy:
+     name: Octopus Destroy
+     runs-on: self-hosted
+     env:
+      TF_VAR_OCTOPUS_API_KEY: ${{ secrets.OCTOPUS_API_KEY }}
+     defaults:
+      run:
+         working-directory: octopus
+
+     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Terraform Init
+        run: |
+          terraform init -reconfigure -no-color
+
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve -no-color
+          
+          
