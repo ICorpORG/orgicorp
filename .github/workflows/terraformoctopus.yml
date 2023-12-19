@@ -2,8 +2,8 @@
 
 name: terraformoctopus
 
-on: push
-    
+on: 
+  push:
     paths:
       - "octopus/**"
       - "config/**/*.yml"
