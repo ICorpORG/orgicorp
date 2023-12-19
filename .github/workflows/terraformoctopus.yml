@@ -28,6 +28,9 @@ jobs:
         run: |
           terraform init -reconfigure -no-color
           terraform validate
-          terraform plan  
+          terraform plan -no-color
+
+      -name: Terraform Apply
+       run: terraform apply -auto-approve -no-color
           
           
