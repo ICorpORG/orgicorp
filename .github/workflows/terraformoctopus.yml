@@ -29,13 +29,13 @@ jobs:
         with:
           terraform_version: 1.6.5
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
+#      - uses: actions/setup-node@v4
+#        with:
+#          node-version: 20
 
       - name: Terraform Plan
         run: |
-          terraform init -reconfigure -no-color
+          terraform init
 ##          terraform validate
 ##          terraform plan  -no-color
           
