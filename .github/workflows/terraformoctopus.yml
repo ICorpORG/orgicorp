@@ -2,28 +2,33 @@
 
 name: terraformoctopus
 
+# on indicates how the workflow should run. Use push/pull to activate on a push and/or pull
 on: 
   push:
     paths:
       - "octopus/**"
       - "config/**/*.yml"
       - ".github/workflows/**"
-  workflow_dispatch:
+  workflow_dispatch: # Will allow the action/workflow to run from the GUI as ad-hoc run
 
 jobs:
   terraform:
      name: Octopus Build
-     runs-on: self-hosted
+     runs-on: self-hosted  # Sets runner to self hosted local runner
      env:
-      TF_VAR_OCTOPUS_API_KEY: ${{ secrets.OCTOPUS_API_KEY }}
+      TF_VAR_OCTOPUS_API_KEY: ${{ secrets.OCTOPUS_API_KEY }}  # Set Octopus access API key environment variable
      defaults:
+     # Sets working folder, where TF settings are read from. Referenced from the .github parent folder.
+     # Can use a local path, just use normal 'C:\folder\foler' format
       run:
-         working-directory: octopus
+         working-directory: octopus 
 
      steps:
+      # Used to create a local copy of the repo so the workflow can access it
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Actual terraform commands - can separate into multiple name/run sections - use creativity here
       - name: Terraform Plan
         run: |
           terraform init -reconfigure -no-color
