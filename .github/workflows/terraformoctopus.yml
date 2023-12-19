@@ -28,6 +28,6 @@ jobs:
         run: |
           terraform init -reconfigure -no-color
           terraform validate
-          terraform plan -input=false -no-color -refresh=true -out=plan.out 
-          terraform show -json plan.out > plan.out.json
+          terraform plan  
+          
           
