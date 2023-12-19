@@ -5,8 +5,8 @@ name: terraformoctopus
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+ ## pull_request:
+ ##   branches: [ "main" ]
     
     paths:
       - "octopus/**"
@@ -21,7 +21,7 @@ jobs:
      defaults:
       run:
          working-directory: octopus
-         
+
      steps:
       - name: Checkout
         uses: actions/checkout@v4
