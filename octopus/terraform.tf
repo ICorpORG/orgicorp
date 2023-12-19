@@ -12,6 +12,6 @@ terraform {
 }
 
 provider "octopusdeploy" {
-  address = "http://win2k12-srv4.icorp.local:8080"
+  address = var.OCTOPUS_URL
   api_key = var.OCTOPUS_API_KEY
 }
