@@ -16,3 +16,7 @@ jobs:
             files: "**/*"
             output_folder: packaged
          
+      - uses: actions/upload-artifact@v3
+        with:
+          name: "Hello.ps1"
+          path: "C:/actions-runner/_work/orgicorp/orgicorp/Test2"
