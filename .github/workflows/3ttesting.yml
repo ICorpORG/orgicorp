@@ -4,7 +4,8 @@ on:
 
 jobs:
   change-log:
-    runs-on: ubuntu-20.04
+   # runs-on: ubuntu-20.04
+    runs-on: self-hosted
     steps:
       - name: Create Zip package
         uses: OctopusDeploy/create-zip-package-action@v3
