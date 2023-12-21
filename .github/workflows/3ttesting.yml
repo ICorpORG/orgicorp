@@ -20,7 +20,8 @@ jobs:
 
       - name: Get current date
         id: set-version
-        run: echo "::set-output name=date::$(date +"%Y-%m-%d")"
+  #      run: echo "::set-output name=date::$(date +"%Y-%m-%d")"
+        run: echo "date=$(date + '%Y.%m.%d')" >> $GITHUB_OUTPUT
 
   #    - name: Set version
   #      id: set-version
