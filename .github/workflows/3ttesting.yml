@@ -28,7 +28,7 @@ jobs:
       - name: Show Date Time
         run: |
           echo "The time was ${{ steps.timedate.outputs.time }}" >> $GITHUB_OUTPUT
-          echo "Run number is ${{ github.GITHUB_RUN_NUMBER }}"
+          echo "Run number is ${{ github.run_number }}"
 
   ##    - name: Get current date
   ##      id: set-version
