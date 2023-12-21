@@ -22,7 +22,7 @@ jobs:
         id: set-version
   #      run: echo "::set-output name=date::$(date +"%Y-%m-%d")"
         run: |
-          date_is=$(date).$GITHUB_RUN_NUMBER
+          date_is=$date
           echo "verson determined to be $date_is"
           echo "verson determined to be $date_is" >> $GITHUB_OUTPUT
 
