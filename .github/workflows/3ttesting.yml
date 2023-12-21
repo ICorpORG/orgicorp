@@ -21,7 +21,7 @@ jobs:
       - name: Get current date
         id: set-version
   #      run: echo "::set-output name=date::$(date +"%Y-%m-%d")"
-        run: echo "date=$(date +'%Y.%m.%d')" >> $GITHUB_OUTPUT
+        run: echo "date_is=$(date +'%Y.%m.%d')" >> $GITHUB_OUTPUT
 
   #    - name: Set version
   #      id: set-version
@@ -36,7 +36,7 @@ jobs:
         with:
              package_id: ${{ matrix.scriptfolders }}
    #          version: ${{ steps.set-version.outputs.PACKAGE_VERSION }}
-             version: ${{ steps.set-version.outputs.date }}
+             version: ${{ steps.set-version.outputs.date_is }}
              base_path: ${{ matrix.scriptfolders }}
              files: "**/*"
              output_folder: packaged
@@ -51,5 +51,5 @@ jobs:
         uses: OctopusDeploy/push-build-information-action@v3
         with:
    #        version: ${{ steps.set-version.outputs.PACKAGE_VERSION }}
-           version: ${{ steps.set-version.outputs.date }}
+           version: ${{ steps.set-version.outputs.date_is }}
            packages: ${{ matrix.scriptfolders }}
