@@ -1,0 +1,22 @@
+name: 3T Scripts to Octopus
+on:
+  workflow_dispatch:
+
+jobs:
+  change-log:
+   # runs-on: ubuntu-20.04
+    runs-on: self-hosted
+    steps:
+      - name: Create Zip package
+        uses: OctopusDeploy/create-zip-package-action@v3
+        with:
+            package_id: TestWFOcto
+            version: "1.0.0"
+            base_path: "Test2"
+            files: "**/*"
+            output_folder: packaged
+         
+      - uses: actions/upload-artifact@v3
+        with:
+          name: "Hello.ps1"
+          path: "C:/actions-runner/_work/orgicorp/orgicorp/Test2"
