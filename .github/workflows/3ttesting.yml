@@ -32,7 +32,7 @@ jobs:
           echo "The time was ${{ steps.timedate.outputs.time }}" >> $GITHUB_OUTPUT
           echo "Run number is ${{ github.run_number }}"
           echo "New version number is ${{ steps.timedate.outputs.time }}.${{ github.run_number }}"
-          echo "VERSION_NUMBER=${{ steps.timedate.outputs.time }}.${{ github.run_number }}" >> GITHUB_ENV
+          echo "VERSION_NUMBER=${{ steps.timedate.outputs.time }}.${{ github.run_number }}" >> GITHUB_OUTPUT
    #     env: 
    #       VERSION_NUMBER: ${{ steps.timedate.outputs.time }}.${{ github.run_number }}
 
