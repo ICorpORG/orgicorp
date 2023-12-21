@@ -18,10 +18,10 @@ jobs:
         with:
            persist-credentials: false
 
-  ##    - name: Get current date
-  ##      id: set-version
+      - name: Get current date
+        id: set-version
   #      run: echo "::set-output name=date::$(date +"%Y-%m-%d")"
-  ##      run: echo "date_is=$(date +'%Y.%m.%d')" >> $GITHUB_OUTPUT
+        run: echo "date_is=$('%Y.%m.%d')" >> $GITHUB_OUTPUT
 
   #    - name: Set version
   #      id: set-version
