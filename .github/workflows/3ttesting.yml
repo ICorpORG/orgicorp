@@ -5,6 +5,7 @@ env:
   OCTOPUS_API_KEY: ${{ secrets.OCTOPUS_API_KEY }}
   OCTOPUS_URL: "http://win2k12-srv4.icorp.local:8080"
   OCTOPUS_SPACE: 'Default'
+  
 
 jobs:
   scripts-3t:
@@ -26,12 +27,14 @@ jobs:
           format: "YYYY.MM.DD.ss"
 
       - name: Show Date Time
+        id: version
         run: |
           echo "The time was ${{ steps.timedate.outputs.time }}" >> $GITHUB_OUTPUT
           echo "Run number is ${{ github.run_number }}"
           echo "New version number is ${{ steps.timedate.outputs.time }}.${{ github.run_number }}"
-        env: 
-          VERSION_NUMBER: ${{ steps.timedate.outputs.time }}.${{ github.run_number }}
+          echo "VERSION_NUMBER=${{ steps.timedate.outputs.time }}.${{ github.run_number }}" >> GITHUB_ENV
+   #     env: 
+   #       VERSION_NUMBER: ${{ steps.timedate.outputs.time }}.${{ github.run_number }}
 
   ##    - name: Get current date
   ##      id: set-version
@@ -59,7 +62,7 @@ jobs:
              base_path: ${{ matrix.scriptfolders }}
              files: "**/*"
              output_folder: packaged
-      - run: echo "Passed in var for version is $VERSION_NUMBER"
+      - run: echo "Passed in var for version is ${{ steps.version.outputs.VERSION_NUMBER }}"
 
 
       - name: Push a package to Octopus Deploy
