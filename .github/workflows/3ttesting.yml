@@ -1,5 +1,6 @@
 name: 3T Scripts to Octopus
 on:
+  push:
   workflow_dispatch:
 env:
   OCTOPUS_API_KEY: ${{ secrets.OCTOPUS_API_KEY }}
