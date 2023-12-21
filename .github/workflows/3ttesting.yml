@@ -1,22 +1,48 @@
 name: 3T Scripts to Octopus
 on:
   workflow_dispatch:
+env:
+  OCTOPUS_API_KEY: ${{ secrets.OCTOPUS_API_KEY }}
+  OCTOPUS_URL: "http://win2k12-srv4.icorp.local:8080"
+  OCTOPUS_SPACE: 'Default'
 
 jobs:
-  change-log:
-   # runs-on: ubuntu-20.04
+  scripts-3t:
+    strategy:
+      matrix:
+        scriptfolders: [Test2,Test1]
     runs-on: self-hosted
     steps:
-      - name: Create Zip package
-        uses: OctopusDeploy/create-zip-package-action@v3
-        with:
-            package_id: TestWFOcto
-            version: "1.0.0"
-            base_path: "Test2"
+      - name: Checkout code
+       uses: actions/checkout@v4
+       with:
+          persist-credentials: false
+
+     - name: Set version
+       id: set-version
+       run: |
+          version=$(date +'%Y.%m.%d').$GITHUB_RUN_NUMBER
+          echo "PACKAGE_VERSION determined to be $version"
+          echo "PACKAGE_VERSION=$version" >> $GITHUB_OUTPUT
+
+     - name: Create Zip package
+       id: package
+       uses: OctopusDeploy/create-zip-package-action@v3
+       with:
+            package_id: ${{ matrix.scriptfolders }}
+            version: ${{ steps.set-version.outputs.PACKAGE_VERSION }}
+            base_path: ${{ matrix.scriptfolders }}
             files: "**/*"
             output_folder: packaged
+
+      - name: Push a package to Octopus Deploy
+       uses: OctopusDeploy/push-package-action@v3
+       with:
+        packages: ${{ steps.package.outputs.package_file_path }}
+        overwrite_mode: OverwriteExisting
          
-      - uses: actions/upload-artifact@v3
-        with:
-          name: "Hello.ps1"
-          path: "C:/actions-runner/_work/orgicorp/orgicorp/Test2"
+     - name: Push build information to Octopus Deploy 
+       uses: OctopusDeploy/push-build-information-action@v3
+       with:
+          version: ${{ steps.set-version.outputs.PACKAGE_VERSION }}
+          packages: ${{ matrix.scriptfolders }}
