@@ -32,19 +32,12 @@ jobs:
           echo "The time was ${{ steps.timedate.outputs.time }}" >> $GITHUB_OUTPUT
           echo "Run number is ${{ github.run_number }}"
           echo "New version number is ${{ steps.timedate.outputs.time }}.${{ github.run_number }}"
-          echo "VERSION_NUMBER=${{ steps.timedate.outputs.time }}.${{ github.run_number }}" >> $GITHUB_OUTPUT
-   #     env: 
-   #       VERSION_NUMBER: ${{ steps.timedate.outputs.time }}.${{ github.run_number }}
+          echo "VERSION_NUMBER=${{ steps.timedate.outputs.time }}.${{ github.run_number }}" >> $GITHUB_ENV
 
-      - run: |
-          export VERSION_NUMBER=${{ steps.timedate.outputs.time }}.${{ github.run_number }}
-          echo "::set-env name=VERSION_NUMBER::$VERSION_NUMBER"
-        
-      - run: echo $VERSION_NMUBER
+      - name: Test
+        run: |
+          echo "Working variable: $VERSION_NUMBER"
 
-      - name: Check Version
-   #     run: echo "Passed in var for version is ${{ steps.version.outputs.VERSION_NUMBER }}"
-        run: echo $env:VERSION_NUMBER
 
   ##    - name: Get current date
   ##      id: set-version
