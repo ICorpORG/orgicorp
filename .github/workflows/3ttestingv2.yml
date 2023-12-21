@@ -1,0 +1,50 @@
+name: 3T Scripts to Octopus v2
+on:
+  push:
+  workflow_dispatch:
+env:
+  OCTOPUS_API_KEY: ${{ secrets.OCTOPUS_API_KEY }}
+  OCTOPUS_URL: "http://win2k12-srv4.icorp.local:8080"
+  OCTOPUS_SPACE: 'Default'
+  
+jobs:
+  scripts-3t:
+    strategy:
+      matrix:
+        scriptfolders: [Test2,Test1]
+    runs-on: ["self-hosted"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+           persist-credentials: false
+
+      - name: Date Time Setup
+        id: timedate
+        uses: $get-date
+        with:
+   #       format: "YYYY_MM_DD HH_mm_ss_SSS"
+          format: "YYYY.MM.DD"
+        
+
+      - name: Create Zip package
+        id: package
+        uses: OctopusDeploy/create-zip-package-action@v3
+        with:
+             package_id: ${{ matrix.scriptfolders }}
+             version: ${{ steps.timedate.outputs.time }}.${{ github.run_number }}
+             base_path: ${{ matrix.scriptfolders }}
+             files: "**/*"
+             output_folder: packaged
+
+      - name: Push a package to Octopus Deploy
+        uses: OctopusDeploy/push-package-action@v3
+        with:
+         packages: ${{ steps.package.outputs.package_file_path }}
+         overwrite_mode: OverwriteExisting
+         
+      - name: Push build information to Octopus Deploy 
+        uses: OctopusDeploy/push-build-information-action@v3
+        with:
+           version: ${{ steps.timedate.outputs.time }}.${{ github.run_number }}
+           packages: ${{ matrix.scriptfolders }}
