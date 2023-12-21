@@ -6,7 +6,6 @@ env:
   OCTOPUS_URL: "http://win2k12-srv4.icorp.local:8080"
   OCTOPUS_SPACE: 'Default'
   
-
 jobs:
   scripts-3t:
     strategy:
@@ -26,51 +25,15 @@ jobs:
    #       format: "YYYY_MM_DD HH_mm_ss_SSS"
           format: "YYYY.MM.DD"
 
-      - name: Show Date Time
-        id: version
-        run: |
-          echo "The time was ${{ steps.timedate.outputs.time }}" >> $GITHUB_OUTPUT
-          echo "Run number is ${{ github.run_number }}"
-          echo "New version number is ${{ steps.timedate.outputs.time }}.${{ github.run_number }}"
-          echo "VERSION_NUMBER=${{ steps.timedate.outputs.time }}.${{ github.run_number }}" >> $GITHUB_ENV
-          echo "VERSION_NUMBER2=hello" >> github.github_env
-
-      - name: Test
-        run: |
-          echo "Working variable: ${{ steps.version.outputs.VERSION_NUMBER }}"
-          echo "Testing variable: ${{ steps.version.outputs.VERSION_NUMBER2 }}"
-
-
-
-  ##    - name: Get current date
-  ##      id: set-version
-  #      run: echo "::set-output name=date::$(date +"%Y-%m-%d")"
-  ##      run: |
-  ##        date_is=$date
-  ##        echo "verson determined to be $date_is"
-  ##        echo "verson determined to be $date_is" >> $GITHUB_OUTPUT
-
-  #    - name: Set version
-  #      id: set-version
-  ##      run: |
-   #        version=$(date +'%Y.%m.%d').$GITHUB_RUN_NUMBER
-  #         echo "PACKAGE_VERSION determined to be $version"
-  #         echo "PACKAGE_VERSION=$version" >> $GITHUB_OUTPUT
-
       - name: Create Zip package
         id: package
         uses: OctopusDeploy/create-zip-package-action@v3
         with:
              package_id: ${{ matrix.scriptfolders }}
-   #          version: ${{ steps.set-version.outputs.PACKAGE_VERSION }}
-   #          version: ${{ steps.set-version.outputs.date_is }}
              version: ${{ steps.timedate.outputs.time }}.${{ github.run_number }}
              base_path: ${{ matrix.scriptfolders }}
              files: "**/*"
              output_folder: packaged
-
-      
-
 
       - name: Push a package to Octopus Deploy
         uses: OctopusDeploy/push-package-action@v3
@@ -81,7 +44,5 @@ jobs:
       - name: Push build information to Octopus Deploy 
         uses: OctopusDeploy/push-build-information-action@v3
         with:
-   #        version: ${{ steps.set-version.outputs.PACKAGE_VERSION }}
-   #        version: ${{ steps.set-version.outputs.date_is }}
            version: ${{ steps.timedate.outputs.time }}.${{ github.run_number }}
            packages: ${{ matrix.scriptfolders }}
