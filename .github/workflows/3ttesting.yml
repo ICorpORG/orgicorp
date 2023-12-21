@@ -18,12 +18,24 @@ jobs:
         with:
            persist-credentials: false
 
-      - name: Get current date
-        id: set-version
-  #      run: echo "::set-output name=date::$(date +"%Y-%m-%d")"
+      - name: Date Time Setup
+        id: timedate
+        uses: Kaven-Universe/github-action-current-date-time@v1
+        with:
+   #       format: "YYYY_MM_DD HH_mm_ss_SSS"
+          format: "YYYY.MM.DD.ss"
+
+      - name: Show Date Time
         run: |
-          echo "date=$(date + '%Y.%m.%d')" >> $GITHUB_OUTPUT
-          echo "RUN Number is ${{ github.GITHUB_RUN_NUMBER}}"
+          echo "The time was ${{ steps.timedate.outputs.time }}" >> $GITHUB_OUTPUT
+
+  ##    - name: Get current date
+  ##      id: set-version
+  #      run: echo "::set-output name=date::$(date +"%Y-%m-%d")"
+  ##      run: |
+  ##        date_is=$date
+  ##        echo "verson determined to be $date_is"
+  ##        echo "verson determined to be $date_is" >> $GITHUB_OUTPUT
 
   #    - name: Set version
   #      id: set-version
@@ -38,7 +50,8 @@ jobs:
         with:
              package_id: ${{ matrix.scriptfolders }}
    #          version: ${{ steps.set-version.outputs.PACKAGE_VERSION }}
-             version: ${{ steps.set-version.outputs.date }}
+   #          version: ${{ steps.set-version.outputs.date_is }}
+             version: ${{ steps.timedate.outputs.time }}
              base_path: ${{ matrix.scriptfolders }}
              files: "**/*"
              output_folder: packaged
@@ -53,5 +66,6 @@ jobs:
         uses: OctopusDeploy/push-build-information-action@v3
         with:
    #        version: ${{ steps.set-version.outputs.PACKAGE_VERSION }}
-           version: ${{ steps.set-version.outputs.date }}
+   #        version: ${{ steps.set-version.outputs.date_is }}
+           version: ${{ steps.timedate.outputs.time }}
            packages: ${{ matrix.scriptfolders }}
