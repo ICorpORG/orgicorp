@@ -33,12 +33,12 @@ jobs:
           echo "Run number is ${{ github.run_number }}"
           echo "New version number is ${{ steps.timedate.outputs.time }}.${{ github.run_number }}"
           echo "VERSION_NUMBER=${{ steps.timedate.outputs.time }}.${{ github.run_number }}" >> $GITHUB_ENV
-          echo "VERSION_NUMBER2=hello" >> github.GITHUB_ENV
+          echo "VERSION_NUMBER2=hello" >> $env:github.GITHUB_ENV
 
       - name: Test
         run: |
-          echo "Working variable: $VERSION_NUMBER"
-          echo "Testing variable: $VERSION_NUMBER2"
+          echo "Working variable: ${{ steps.version.outputs.VERSION_NUMBER }}"
+          echo "Testing variable: ${{ steps.version.outputs.VERSION_NUMBER2 }}"
 
 
 
