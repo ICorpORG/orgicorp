@@ -36,6 +36,9 @@ jobs:
    #     env: 
    #       VERSION_NUMBER: ${{ steps.timedate.outputs.time }}.${{ github.run_number }}
 
+      - name: Check Version
+        run: echo "Passed in var for version is ${{ steps.version.outputs.VERSION_NUMBER }}"
+
   ##    - name: Get current date
   ##      id: set-version
   #      run: echo "::set-output name=date::$(date +"%Y-%m-%d")"
@@ -62,7 +65,8 @@ jobs:
              base_path: ${{ matrix.scriptfolders }}
              files: "**/*"
              output_folder: packaged
-      - run: echo "Passed in var for version is ${{ steps.version.outputs.VERSION_NUMBER }}"
+
+      
 
 
       - name: Push a package to Octopus Deploy
