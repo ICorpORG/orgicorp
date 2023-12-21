@@ -59,6 +59,8 @@ jobs:
              base_path: ${{ matrix.scriptfolders }}
              files: "**/*"
              output_folder: packaged
+      - run: echo "Passed in var for version is $VERSION_NUMBER"
+
 
       - name: Push a package to Octopus Deploy
         uses: OctopusDeploy/push-package-action@v3
