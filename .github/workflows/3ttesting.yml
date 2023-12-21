@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         scriptfolders: [Test2,Test1]
-    runs-on: self-hosted
+    runs-on: ["self-hosted"]
     steps:
       - name: Checkout code
        uses: actions/checkout@v4
