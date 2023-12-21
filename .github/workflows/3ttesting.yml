@@ -20,7 +20,7 @@ jobs:
 
       - name: Get current date
         id: set-version
-        run: echo "::set-output name=date::{$(date +'%Y-%m-%d')}"
+        run: echo "::set-output name=date::$(date +"%Y-%m-%d")"
 
   #    - name: Set version
   #      id: set-version
