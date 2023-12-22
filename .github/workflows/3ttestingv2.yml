@@ -22,7 +22,9 @@ jobs:
       - name: Date Time Setup
         id: timedate
         shell: pwsh
-        run: get-date -Format "yyyy.mm.dd"
+        run: |
+          get-date -Format "yyyy.mm.dd"
+          echo "VERSION_NUMBER=(get-date -Format "yyyy.mm.dd").$GITHUB_RUN_NUMBER" >> $GITHUB_ENV
       
 
       - name: Create Zip package
