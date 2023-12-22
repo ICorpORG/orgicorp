@@ -31,7 +31,7 @@ jobs:
       - name: Check Var
         shell: pwsh
         run: |
-         write-host  ${{ steps.timedate.outputs.timedate2 }}
+         write-host  ${{ steps.timedate.outputs.version }}
       
 
       - name: Create Zip package
