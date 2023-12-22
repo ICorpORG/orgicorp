@@ -28,7 +28,7 @@ jobs:
       - name: test vn
         run: |          
           echo "version"
-          write-output ${{ steps.timedate.outputs.version }}
+          echo $env:version
 
 
       - name: Create Zip package
