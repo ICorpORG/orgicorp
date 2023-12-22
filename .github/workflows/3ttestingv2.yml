@@ -35,7 +35,7 @@ jobs:
         uses: OctopusDeploy/create-zip-package-action@v3
         with:
              package_id: ${{ matrix.scriptfolders }}
-             version: "$env:version"
+             version: $($env:version)
              base_path: ${{ matrix.scriptfolders }}
              files: "**/*"
              output_folder: packaged
