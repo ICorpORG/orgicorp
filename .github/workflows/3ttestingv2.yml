@@ -24,6 +24,7 @@ jobs:
         shell: pwsh
         run: |
           $version=$(get-date -Format "yyyy.mm.dd.") + ${{ github.run_number }}
+          write-output ::set-output name=versiontd::$version
   #        write-output "Version is: $version"
 
       - name: Create Zip package
@@ -31,7 +32,7 @@ jobs:
         uses: OctopusDeploy/create-zip-package-action@v3
         with:
              package_id: ${{ matrix.scriptfolders }}
-             version: ${{ steps.timedate.outputs.version }}
+             version: ${{ steps.timedate.outputs.versiontd }}
              base_path: ${{ matrix.scriptfolders }}
              files: "**/*"
              output_folder: packaged
@@ -45,5 +46,5 @@ jobs:
       - name: Push build information to Octopus Deploy 
         uses: OctopusDeploy/push-build-information-action@v3
         with:
-           version: ${{ steps.timedate.outputs.version }}
+           version: ${{ steps.timedate.outputs.versiontd }}
            packages: ${{ matrix.scriptfolders }}
