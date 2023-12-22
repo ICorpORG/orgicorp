@@ -23,7 +23,7 @@ jobs:
         id: timedate
     #    shell: pwsh
         run: |
-         echo "version=$($(get-date -Format "yyyy.mm.dd.") + ${{ github.run_number }})" >> $env:GITHUB_ENV
+         echo "version=$($(get-date -Format "yyyy.mm.dd.") + ${{ github.run_number }})" >> $env:GITHUB_OUTPUT
 
       - name: test vn
         run: |          
