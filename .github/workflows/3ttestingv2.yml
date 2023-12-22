@@ -23,12 +23,11 @@ jobs:
         id: timedate
     #    shell: pwsh
         run: |
-         write-output   $($(get-date -Format "yyyy.mm.dd.") + ${{ github.run_number }})
          echo "version=$($(get-date -Format "yyyy.mm.dd.") + ${{ github.run_number }})" >> $env:GITHUB_ENV
+
       - name: test vn
         run: |          
-          echo "version"
-          echo $env:version
+          echo "Version is:  $env:version"
 
 
       - name: Create Zip package
