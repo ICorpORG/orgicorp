@@ -23,10 +23,9 @@ jobs:
         id: timedate
     #    shell: pwsh
         run: |
-         write-output   "$version=$(get-date -Format "yyyy.mm.dd.") + ${{ github.run_number }}" >> ${{ github.env }}
-          #        write-output ::set-output name=versiontd::$version
-  #        write-output "Version is: $version"
-
+         write-output   "$version=$(get-date -Format "yyyy.mm.dd.") + ${{ github.run_number }}"
+         echo "$version=$(get-date -Format "yyyy.mm.dd.") + ${{ github.run_number }}" >> $GITHUB_ENV
+ 
       - name: Create Zip package
         id: package
         uses: OctopusDeploy/create-zip-package-action@v3
