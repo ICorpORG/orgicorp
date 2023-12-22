@@ -23,7 +23,7 @@ jobs:
         id: timedate
         shell: pwsh
         run: |
-          $version=$(get-date -Format "yyyy.mm.dd") + ${{ github.run_number }}
+          $version=$(get-date -Format "yyyy.mm.dd.") + ${{ github.run_number }}
           write-output "Version is: $version"
           write-output ::set-output name=timedate2::$version
   ##        write-output "VERSION_NUMBER=(get-date -Format "yyyy.mm.dd").$GITHUB_RUN_NUMBER" >> $GITHUB_ENV
