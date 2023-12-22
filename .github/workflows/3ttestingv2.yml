@@ -19,27 +19,19 @@ jobs:
         with:
            persist-credentials: false
 
-      - name: Date Time Setup
+      - name: Get Version Number
         id: timedate
         shell: pwsh
         run: |
           $version=$(get-date -Format "yyyy.mm.dd.") + ${{ github.run_number }}
-          write-output "Version is: $version"
-          write-output ::set-output name=timedate2::$version
-  ##        write-output "VERSION_NUMBER=(get-date -Format "yyyy.mm.dd").$GITHUB_RUN_NUMBER" >> $GITHUB_ENV
-
-      - name: Check Var
-        shell: pwsh
-        run: |
-         write-host  ${{ steps.timedate.outputs.version }}
-      
+  #        write-output "Version is: $version"
 
       - name: Create Zip package
         id: package
         uses: OctopusDeploy/create-zip-package-action@v3
         with:
              package_id: ${{ matrix.scriptfolders }}
-             version: ${{ steps.timedate.outputs.time }}.${{ github.run_number }}
+             version: ${{ steps.timedate.outputs.version }}
              base_path: ${{ matrix.scriptfolders }}
              files: "**/*"
              output_folder: packaged
@@ -53,5 +45,5 @@ jobs:
       - name: Push build information to Octopus Deploy 
         uses: OctopusDeploy/push-build-information-action@v3
         with:
-           version: ${{ steps.timedate.outputs.time }}.${{ github.run_number }}
+           version: ${{ steps.timedate.outputs.version }}
            packages: ${{ matrix.scriptfolders }}
