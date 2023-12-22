@@ -23,14 +23,15 @@ jobs:
         id: timedate
         shell: pwsh
         run: |
-          $version=get-date -Format "yyyy.mm.dd" >> $GITHUB_ENV
+          $version=get-date -Format "yyyy.mm.dd"
           write-output "Version is: $version"
+          write-output ::set-output name=timedate2::$version
   ##        write-output "VERSION_NUMBER=(get-date -Format "yyyy.mm.dd").$GITHUB_RUN_NUMBER" >> $GITHUB_ENV
 
       - name: Check Var
         shell: pwsh
         run: |
-         write-output "Version is: $version"
+         write-output "Version is: ", ${{ steps.timedate.outputs.timedate2 }}
       
 
       - name: Create Zip package
