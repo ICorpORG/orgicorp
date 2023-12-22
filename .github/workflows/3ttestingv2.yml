@@ -28,7 +28,7 @@ jobs:
 
       - name: Check Var
         shell: pwsh
-        run: write-host $env:VERSION_NUMBER }
+        run: write-host $env:VERSION_NUMBER
       
 
       - name: Create Zip package
