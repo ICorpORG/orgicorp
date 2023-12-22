@@ -35,7 +35,7 @@ jobs:
         uses: OctopusDeploy/create-zip-package-action@v3
         with:
              package_id: ${{ matrix.scriptfolders }}
-   #          version: $($env:version)
+             version: $version
              base_path: ${{ matrix.scriptfolders }}
              files: "**/*"
              output_folder: packaged
@@ -49,5 +49,5 @@ jobs:
       - name: Push build information to Octopus Deploy 
         uses: OctopusDeploy/push-build-information-action@v3
         with:
-     #      version: $($env:version)
+           version: $($env:version)
            packages: ${{ matrix.scriptfolders }}
