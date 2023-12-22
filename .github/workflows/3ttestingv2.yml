@@ -28,7 +28,7 @@ jobs:
 
       - name: test vn
         run: |          
-          echo "Version is:  $env:version"
+          echo "Version is:  ${{ env:version }}"
           echo "Version 2 is: ${{ steps.timedate.outputs.version }}"
 
 
