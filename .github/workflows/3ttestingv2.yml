@@ -22,7 +22,7 @@ jobs:
       - name: Date Time Setup
         id: timedate
         shell: pwsh
-        run: get-date -Format "YYYY.mm.dd"
+        run: get-date -Format "yyyy.mm.dd"
       
 
       - name: Create Zip package
