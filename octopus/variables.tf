@@ -7,5 +7,5 @@ variable "OCTOPUS_API_KEY" {
 variable "OCTOPUS_URL" {
   type        = string
   description = "Octopus URL"
-  default = "http://win2k12-srv4.icorp.local:8080"
+  default = "http://win2k22-oct1.icorp.local:8080"
 }
