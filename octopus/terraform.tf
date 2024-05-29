@@ -11,8 +11,7 @@ terraform {
   }
 }
 
-provider "octopusdeploy" {
-  address = var.OCTOPUS_URL
-  # api_key = var.OCTOPUS_API_KEY
-  api_key = "API-90L5KKSWXWMGNYG0WZ7GA1IBKZI6XSU"
-}
+#provider "octopusdeploy" {
+#  address = var.OCTOPUS_URL
+#  api_key = var.OCTOPUS_API_KEY
+#}
