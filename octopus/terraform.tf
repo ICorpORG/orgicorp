@@ -11,7 +11,7 @@ terraform {
   }
 }
 
-#provider "octopusdeploy" {
-#  address = var.OCTOPUS_URL
-#  api_key = var.OCTOPUS_API_KEY
-#}
+provider "octopusdeploy" {
+  address = var.OCTOPUS_URL
+  api_key = var.OCTOPUS_API_KEY
+}
