@@ -52,7 +52,10 @@ jobs:
           echo ${{ secrets.OCTOPUS_API_KEY }}
           echo "Trick to echo GitHub Actions Secret:  "
           echo ${{secrets.OCTOPUS_API_KEY}} | sed 's/./& /g'  
-          TF_VAR_OCTOPUS_API_KEY: ${{ secrets.OCTOPUS_API_KEY }}
+          #TF_VAR_OCTOPUS_API_KEY: ${{ secrets.OCTOPUS_API_KEY }}
+          echo "TF_VAR_OCTOPUS_API_KEY determined to be ${{ secrets.OCTOPUS_API_KEY }}"
+          echo "TF_VAR_OCTOPUS_API_KEY=${{ secrets.OCTOPUS_API_KEY }}" >> $GITHUB_OUTPUT
+
 
      
 
