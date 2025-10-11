@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
 env:
   OCTOPUS_API_KEY: ${{ secrets.OCTOPUS_API_KEY }}
-  OCTOPUS_URL: "http://win2k22-oct1.icorp.local:8080"
+  OCTOPUS_URL: "http://winsrv-oct1.icorp2.local:8080"
   OCTOPUS_SPACE: 'Default'
   
 jobs:
