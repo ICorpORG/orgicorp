@@ -154,6 +154,36 @@ step "run-a-script-git-test" {
     }
 }
 
+step "run-a-script-git-test-v2" {
+    name = "Run a Script-git test v2"
+    properties = {
+        Octopus.Action.TargetRoles = "Web"
+    }
+
+    action {
+        action_type = "Octopus.Script"
+        properties = {
+            Octopus.Action.Package.DownloadOnTentacle = "False"
+            Octopus.Action.Package.FeedId = "orgfeed"
+            Octopus.Action.Package.PackageId = "ICorpORG/orgicorp"
+            Octopus.Action.RunOnServer = "false"
+            Octopus.Action.Script.ScriptFileName = "pstesting3.ps1"
+            Octopus.Action.Script.ScriptSource = "Package"
+            OctopusUseBundledTooling = "False"
+        }
+        worker_pool_variable = ""
+
+        packages {
+            acquisition_location = "Server"
+            feed = "orgfeed"
+            package_id = "ICorpORG/orgicorp"
+            properties = {
+                SelectionMode = "immediate"
+            }
+        }
+    }
+}
+
 step "run-a-script-test2" {
     name = "Run a Script-Test2"
     properties = {
@@ -178,36 +208,6 @@ step "run-a-script-test2" {
             acquisition_location = "Server"
             feed = "octopus-server-built-in"
             package_id = "testing2"
-            properties = {
-                SelectionMode = "immediate"
-            }
-        }
-    }
-}
-
-step "run-a-script-git-test-v2" {
-    name = "Run a Script-git test v2"
-    properties = {
-        Octopus.Action.TargetRoles = "Web"
-    }
-
-    action {
-        action_type = "Octopus.Script"
-        properties = {
-            Octopus.Action.Package.DownloadOnTentacle = "False"
-            Octopus.Action.Package.FeedId = "orgfeed"
-            Octopus.Action.Package.PackageId = "ICorpORG/orgicorp"
-            Octopus.Action.RunOnServer = "false"
-            Octopus.Action.Script.ScriptFileName = "pstesting3.ps1"
-            Octopus.Action.Script.ScriptSource = "Package"
-            OctopusUseBundledTooling = "False"
-        }
-        worker_pool_variable = ""
-
-        packages {
-            acquisition_location = "Server"
-            feed = "orgfeed"
-            package_id = "ICorpORG/orgicorp"
             properties = {
                 SelectionMode = "immediate"
             }
