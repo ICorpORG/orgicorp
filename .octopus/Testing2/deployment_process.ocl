@@ -138,7 +138,7 @@ step "run-a-script-git-test" {
             Octopus.Action.Package.FeedId = "orgfeed"
             Octopus.Action.Package.PackageId = "ICorpORG/orgicorp"
             Octopus.Action.RunOnServer = "false"
-            Octopus.Action.Script.ScriptFileName = "pstesting2.ps1"
+            Octopus.Action.Script.ScriptFileName = "pstesting3.ps1"
             Octopus.Action.Script.ScriptSource = "Package"
         }
         worker_pool_variable = ""
