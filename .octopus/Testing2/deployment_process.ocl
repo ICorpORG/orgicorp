@@ -134,23 +134,12 @@ step "run-a-script-git-test" {
     action {
         action_type = "Octopus.Script"
         properties = {
-            Octopus.Action.Package.DownloadOnTentacle = "False"
-            Octopus.Action.Package.FeedId = "orgfeed"
-            Octopus.Action.Package.PackageId = "ICorpORG/orgicorp"
+            Octopus.Action.GitRepository.Source = "Project"
             Octopus.Action.RunOnServer = "false"
             Octopus.Action.Script.ScriptFileName = "pstesting3.ps1"
-            Octopus.Action.Script.ScriptSource = "Package"
+            Octopus.Action.Script.ScriptSource = "GitRepository"
         }
         worker_pool_variable = ""
-
-        packages {
-            acquisition_location = "Server"
-            feed = "orgfeed"
-            package_id = "ICorpORG/orgicorp"
-            properties = {
-                SelectionMode = "immediate"
-            }
-        }
     }
 }
 
