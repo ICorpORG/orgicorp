@@ -215,3 +215,33 @@ step "run-a-script-test2" {
         }
     }
 }
+
+step "run-a-script-cicd-github-test" {
+    name = "Run a Script - CICD GitHub Test"
+    properties = {
+        Octopus.Action.TargetRoles = "Web"
+    }
+
+    action {
+        action_type = "Octopus.Script"
+        properties = {
+            Octopus.Action.Package.DownloadOnTentacle = "False"
+            Octopus.Action.Package.FeedId = "orgfeed"
+            Octopus.Action.Package.PackageId = "JohnIacutoneP/cicd"
+            Octopus.Action.RunOnServer = "false"
+            Octopus.Action.Script.ScriptFileName = "test.ps1"
+            Octopus.Action.Script.ScriptSource = "Package"
+            OctopusUseBundledTooling = "False"
+        }
+        worker_pool_variable = ""
+
+        packages {
+            acquisition_location = "Server"
+            feed = "orgfeed"
+            package_id = "JohnIacutoneP/cicd"
+            properties = {
+                SelectionMode = "immediate"
+            }
+        }
+    }
+}
