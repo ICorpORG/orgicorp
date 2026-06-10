@@ -11,7 +11,7 @@ jobs:
        TF_VAR_OCTOPUS_API_KEY: ${{secrets.TF_VAR_OCTOPUS_API_KEY}}
    steps:
        # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-       - uses: actions/checkout@v4.1.1
+       - uses: actions/checkout@v5
 
        - name: Step 2 - Echo out a GitHub Actions Secret to the logs
          run: |
