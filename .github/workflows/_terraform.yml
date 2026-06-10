@@ -6,27 +6,27 @@ on:
 
 jobs:
  build:
-  runs-on: ubuntu-latest
-  env:
-      TF_VAR_OCTOPUS_API_KEY: ${{secrets.TF_VAR_OCTOPUS_API_KEY}}
-  steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+   runs-on: ubuntu-latest
+   env:
+       TF_VAR_OCTOPUS_API_KEY: ${{secrets.TF_VAR_OCTOPUS_API_KEY}}
+   steps:
+       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+       - uses: actions/checkout@v4.1.1
 
-      - name: Step 2 - Echo out a GitHub Actions Secret to the logs
-        run: |
-          echo "The GitHub Action Secret will be masked:  "
-          echo ${{ secrets.OCTOPUS_API_KEY }}
-          echo "Trick to echo GitHub Actions Secret:  "
-          echo ${{secrets.OCTOPUS_API_KEY}} | sed 's/./& /g'  
-          TF_VAR_OCTOPUS_API_KEY: ${{ secrets.OCTOPUS_API_KEY }}
+       - name: Step 2 - Echo out a GitHub Actions Secret to the logs
+         run: |
+           echo "The GitHub Action Secret will be masked:  "
+           echo ${{ secrets.OCTOPUS_API_KEY }}
+           echo "Trick to echo GitHub Actions Secret:  "
+           echo ${{secrets.OCTOPUS_API_KEY}} | sed 's/./& /g'  
+           TF_VAR_OCTOPUS_API_KEY: ${{ secrets.OCTOPUS_API_KEY }}
 
 #      - name: Terraform plan
 #        run: |
 #          terraform init -reconfigure -no-color
 #          terraform workspace select ${{ inputs.config_environment }} || terraform workspace new ${{ inputs.config_environment }}
 #          terraform validate
-#          terraform plan -input=false -lock=false -no-color -refresh=true -out=plan.out -var-file="environments/${{ inputs.config_environment }}/terraform.tfvars" -replace=octopusdeploy_deployment_process.stockbroking-release-orchestration
+#          terraform plan -input=false -lock=false -no-color -refresh=true -out=plan.out -var-file="environments/${{ inputs.config_environment }}/terraform.tfvars" -replace=octopusdeploy_deploymen[...]
 #          terraform show -json plan.out > plan.out.json
 
 #      - name: Terraform apply
