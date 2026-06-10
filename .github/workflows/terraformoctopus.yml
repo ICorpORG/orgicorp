@@ -26,7 +26,7 @@ jobs:
      steps:
       # Used to create a local copy of the repo so the workflow can access it
       - name: Checkout
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v5
 
       # Actual terraform commands - can separate into multiple name/run sections - use creativity here
       - name: Terraform Plan
