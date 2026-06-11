@@ -23,7 +23,7 @@ jobs:
         uses: actions/checkout@v5
 
       - name: Login to Octopus
-        uses: OctopusDeploy/login@v1
+        uses: OctopusDeploy/login@v2
         with:
           server: http://localhost:8080
           service_account_id: b79974ee-4f51-4fa0-aa12-39d6f40dd709
