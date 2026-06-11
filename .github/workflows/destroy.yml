@@ -30,7 +30,7 @@ jobs:
 
       - name: Terraform Init
         run: |
-          terraform init -reconfigure -no-color
+          terraform init -upgrade -reconfigure -no-color
 
       - name: Terraform Destroy
         run: terraform destroy -auto-approve -no-color
