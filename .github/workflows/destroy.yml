@@ -28,9 +28,21 @@ jobs:
           server: http://localhost:8080
           service_account_id: b79974ee-4f51-4fa0-aa12-39d6f40dd709
 
+      - name: Get OIDC Token
+        id: oidc
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const token = await core.getIDToken('https://octopus.local');
+            core.setOutput('token', token);
+
       - name: Terraform Init
         run: |
           terraform init -upgrade -reconfigure -no-color
+        env:
+          TF_VAR_OIDC_TOKEN: ${{ steps.oidc.outputs.token }}
 
       - name: Terraform Destroy
         run: terraform destroy -auto-approve -no-color
+        env:
+          TF_VAR_OIDC_TOKEN: ${{ steps.oidc.outputs.token }}
