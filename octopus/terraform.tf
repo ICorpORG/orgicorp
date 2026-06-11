@@ -6,11 +6,12 @@ terraform {
   required_providers {
     octopusdeploy = {
       source  = "OctopusDeployLabs/octopusdeploy"
-      version = "~> 0.14.0"
+      version = "~> 0.13.0"
     }
   }
 }
 
 provider "octopusdeploy" {
   address = var.OCTOPUS_URL
+  api_key = var.OCTOPUS_API_KEY
 }

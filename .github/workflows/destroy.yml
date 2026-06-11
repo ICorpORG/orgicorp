@@ -3,34 +3,25 @@
 name: terraformoctopus destroy
 
 on: 
-  push:
   workflow_dispatch:
 
 jobs:
   terraform-destroy:
-    name: Octopus Destroy
-    runs-on: self-hosted
-    permissions:
-      id-token: write
-      contents: read   
-    
-    defaults:
+     name: Octopus Destroy
+     runs-on: self-hosted
+     env:
+      TF_VAR_OCTOPUS_API_KEY: ${{ secrets.OCTOPUS_API_KEY }}
+     defaults:
       run:
-        working-directory: octopus
+         working-directory: octopus
 
-    steps:
+     steps:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: Login to Octopus
-        uses: OctopusDeploy/login@v1
-        with:
-          server: http://localhost:8080
-          service_account_id: b79974ee-4f51-4fa0-aa12-39d6f40dd709
-
       - name: Terraform Init
         run: |
-          terraform init -upgrade -reconfigure -no-color
+          terraform init -reconfigure -no-color
 
       - name: Terraform Destroy
         run: terraform destroy -auto-approve -no-color
