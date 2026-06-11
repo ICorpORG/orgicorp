@@ -8,18 +8,17 @@ on:
 
 jobs:
   terraform-destroy:
-     name: Octopus Destroy
-     runs-on: self-hosted
-
+    name: Octopus Destroy
+    runs-on: self-hosted
     permissions:
       id-token: write
       contents: read   
     
-     defaults:
+    defaults:
       run:
-         working-directory: octopus
+        working-directory: octopus
 
-     steps:
+    steps:
       - name: Checkout
         uses: actions/checkout@v5
 
