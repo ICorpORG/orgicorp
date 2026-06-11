@@ -12,5 +12,6 @@ terraform {
 }
 
 provider "octopusdeploy" {
-  address = var.OCTOPUS_URL
+  address  = var.OCTOPUS_URL
+  api_key  = var.OIDC_TOKEN
 }
