@@ -32,20 +32,30 @@ jobs:
             throw "OctopusDeploy/login did not return an access_token output"
           }
 
+          $octopusDir = Join-Path $env:GITHUB_WORKSPACE "octopus"
+
+          if (!(Test-Path $octopusDir)) {
+            throw "Terraform directory not found: $octopusDir"
+          }
+
+          $varsPath = Join-Path $octopusDir "oidc.auto.tfvars.json"
+
           $vars = @{
             OCTOPUS_URL = "${{ vars.OCTOPUS_URL }}"
             OCTOPUS_ACCESS_TOKEN = $accessToken
           }
 
-          $varsPath = Join-Path $env:GITHUB_WORKSPACE "octopus\oidc.auto.tfvars.json"
-
           $vars | ConvertTo-Json -Depth 5 | Set-Content -Path $varsPath -Encoding UTF8
 
-          Write-Host "Created Terraform vars file at:"
+          if (!(Test-Path $varsPath)) {
+            throw "Failed to create Terraform vars file: $varsPath"
+          }
+
+          Write-Host "Created Terraform vars file:"
           Write-Host $varsPath
 
-          Write-Host "Files in octopus directory:"
-          Get-ChildItem -Path (Join-Path $env:GITHUB_WORKSPACE "octopus") | Select-Object Name
+          Write-Host "Files in Terraform directory:"
+          Get-ChildItem $octopusDir | Select-Object Name, Length
 
       - name: Terraform Init
         shell: powershell
@@ -55,7 +65,7 @@ jobs:
       - name: Terraform Destroy
         shell: powershell
         working-directory: octopus
-        run: terraform destroy -auto-approve -input=false -no-color
+        run: terraform destroy -auto-approve -input=false -no-color -var-file="oidc.auto.tfvars.json"
 
       - name: Remove temporary Terraform vars file
         if: always()
@@ -65,4 +75,5 @@ jobs:
 
           if (Test-Path $varsPath) {
             Remove-Item $varsPath -Force
+            Write-Host "Removed temporary Terraform vars file"
           }
