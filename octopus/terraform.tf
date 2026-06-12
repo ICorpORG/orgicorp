@@ -12,6 +12,5 @@ terraform {
 }
 
 provider "octopusdeploy" {
-  address = var.OCTOPUS_URL
-  api_key = var.OCTOPUS_API_KEY
+  address = var.OCTOPUS_URL  
 }
