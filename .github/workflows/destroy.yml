@@ -37,7 +37,7 @@ jobs:
 
       - name: Login to Octopus using GitHub OIDC
         id: octopus_login
-        uses: OctopusDeploy/login@v2
+        uses: OctopusDeploy/login@v1
         with:
           server: ${{ vars.OCTOPUS_URL }}
           service_account_id: ${{ vars.OCTOPUS_SERVICE_ACCOUNT_ID }}
