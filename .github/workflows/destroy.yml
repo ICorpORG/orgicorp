@@ -13,8 +13,6 @@ jobs:
     permissions:
       id-token: write
       contents: read
-    env:
-      TF_VAR_OCTOPUS_URL: ${{ vars.OCTOPUS_URL }}
     defaults:
       run:
         working-directory: octopus
@@ -27,7 +25,7 @@ jobs:
         id: octopus_login
         uses: OctopusDeploy/login@v1
         with:
-#          server: ${{ vars.OCTOPUS_URL }}
+          server: "http://winsrv-oct1.icorp2.local:8080"
           service_account_id: "b79974ee-4f51-4fa0-aa12-39d6f40dd709"
 
 #      - name: Login to Octopus using GitHub OIDC
@@ -39,13 +37,13 @@ jobs:
 
       - name: Terraform Init
         env:
-          TF_VAR_OCTOPUS_URL: ${{ steps.octopus_login.outputs.server }}
-          TF_VAR_OCTOPUS_ACCESS_TOKEN: ${{ steps.octopus_login.outputs.access_token }}
+#          TF_VAR_OCTOPUS_URL: ${{ steps.octopus_login.outputs.server }}
+#          TF_VAR_OCTOPUS_ACCESS_TOKEN: ${{ steps.octopus_login.outputs.access_token }}
         run: |
           terraform init -reconfigure -no-color
 
       - name: Terraform Destroy
         env:
-          TF_VAR_OCTOPUS_URL: ${{ steps.octopus_login.outputs.server }}
-          TF_VAR_OCTOPUS_ACCESS_TOKEN: ${{ steps.octopus_login.outputs.access_token }}
+#          TF_VAR_OCTOPUS_URL: ${{ steps.octopus_login.outputs.server }}
+#          TF_VAR_OCTOPUS_ACCESS_TOKEN: ${{ steps.octopus_login.outputs.access_token }}
         run: terraform destroy -auto-approve -no-color
