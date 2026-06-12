@@ -12,10 +12,6 @@ jobs:
     name: Octopus Destroy
     runs-on: self-hosted
 
-    defaults:
-      run:
-        working-directory: octopus
-
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -27,7 +23,7 @@ jobs:
           server: ${{ vars.OCTOPUS_URL }}
           service_account_id: ${{ vars.OCTOPUS_SERVICE_ACCOUNT_ID }}
 
-      - name: Create temporary Terraform vars file
+      - name: Create Terraform OIDC vars file
         shell: powershell
         run: |
           $accessToken = "${{ steps.octopus_login.outputs.access_token }}"
@@ -41,18 +37,32 @@ jobs:
             OCTOPUS_ACCESS_TOKEN = $accessToken
           }
 
-          $vars | ConvertTo-Json | Set-Content -Path "oidc.auto.tfvars.json"
+          $varsPath = Join-Path $env:GITHUB_WORKSPACE "octopus\oidc.auto.tfvars.json"
+
+          $vars | ConvertTo-Json -Depth 5 | Set-Content -Path $varsPath -Encoding UTF8
+
+          Write-Host "Created Terraform vars file at:"
+          Write-Host $varsPath
+
+          Write-Host "Files in octopus directory:"
+          Get-ChildItem -Path (Join-Path $env:GITHUB_WORKSPACE "octopus") | Select-Object Name
 
       - name: Terraform Init
+        shell: powershell
+        working-directory: octopus
         run: terraform init -upgrade -reconfigure -input=false -no-color
 
       - name: Terraform Destroy
+        shell: powershell
+        working-directory: octopus
         run: terraform destroy -auto-approve -input=false -no-color
 
       - name: Remove temporary Terraform vars file
         if: always()
         shell: powershell
         run: |
-          if (Test-Path "oidc.auto.tfvars.json") {
-            Remove-Item "oidc.auto.tfvars.json" -Force
+          $varsPath = Join-Path $env:GITHUB_WORKSPACE "octopus\oidc.auto.tfvars.json"
+
+          if (Test-Path $varsPath) {
+            Remove-Item $varsPath -Force
           }
