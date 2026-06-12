@@ -13,6 +13,8 @@ jobs:
     permissions:
       id-token: write
       contents: read
+    env:
+      TF_VAR_OCTOPUS_URL: ${{ vars.OCTOPUS_URL }}
     defaults:
       run:
         working-directory: octopus
