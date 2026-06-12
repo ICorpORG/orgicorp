@@ -37,9 +37,9 @@ jobs:
 #          server: ${{ vars.OCTOPUS_URL }}
 #          service_account_id: ${{ vars.OCTOPUS_SERVICE_ACCOUNT_ID }}
          
-#      - name: Terraform Init
-#        run: |
-#          terraform init -reconfigure -no-color
+      - name: Terraform Init
+        run: |
+          terraform init -reconfigure -no-color
 
-#      - name: Terraform Destroy
-#        run: terraform destroy -auto-approve -no-color
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve -no-color
