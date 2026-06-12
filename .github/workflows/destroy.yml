@@ -103,7 +103,7 @@ jobs:
           Write-Host "Terraform variables are present"
 
       - name: Terraform Init
-        run: terraform init -upgrade -reconfigure -input=false -no-color
+        run: terraform init -reconfigure -input=false -no-color
 
       - name: Terraform Destroy
         run: terraform destroy -auto-approve -input=false -no-color
