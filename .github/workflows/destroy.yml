@@ -41,6 +41,7 @@ jobs:
         with:
           server: ${{ vars.OCTOPUS_URL }}
           service_account_id: ${{ vars.OCTOPUS_SERVICE_ACCOUNT_ID }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Export Terraform variables
         shell: powershell
@@ -58,23 +59,22 @@ jobs:
           Write-Host "Exported TF_VAR_OCTOPUS_URL"
           Write-Host "Exported TF_VAR_OCTOPUS_ACCESS_TOKEN"
 
-#      - name: Confirm Terraform variables exist
-#        shell: powershell
-#        working-directory: octopus
-#        run: |
-#          if ([string]::IsNullOrWhiteSpace($env:TF_VAR_OCTOPUS_URL)) {
-#            throw "TF_VAR_OCTOPUS_URL is missing"
-#          }
+      - name: Confirm Terraform variables exist
+        shell: powershell
+        working-directory: octopus
+        run: |
+          if ([string]::IsNullOrWhiteSpace($env:TF_VAR_OCTOPUS_URL)) {
+            throw "TF_VAR_OCTOPUS_URL is missing"
+          }
 
-#          if ([string]::IsNullOrWhiteSpace($env:TF_VAR_OCTOPUS_ACCESS_TOKEN)) {
-#            throw "TF_VAR_OCTOPUS_ACCESS_TOKEN is missing"
-#          }
+          if ([string]::IsNullOrWhiteSpace($env:TF_VAR_OCTOPUS_ACCESS_TOKEN)) {
+            throw "TF_VAR_OCTOPUS_ACCESS_TOKEN is missing"
+          }
 
-#          Write-Host "Terraform variables are present"
+          Write-Host "Terraform variables are present"
 
-#      - name: Terraform Init
-#        run: terraform init -upgrade -reconfigure -input=false -no-color
+      - name: Terraform Init
+        run: terraform init -upgrade -reconfigure -input=false -no-color
 
-#      - name: Terraform Destroy
-#        run: terraform destroy -auto-approve -input=false -no-color
-#
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve -input=false -no-color
