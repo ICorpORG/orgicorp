@@ -14,7 +14,7 @@ jobs:
       id-token: write
       contents: read
     env:
-      TF_VAR_OCTOPUS_URL: ${{ vars.OCTOPUS_URL }}     
+      TF_VAR_OCTOPUS_SERVICE_ACCOUNT_ID: ${{ vars.OCTOPUS_SERVICE_ACCOUNT_ID }}     
     defaults:
       run:
         working-directory: octopus

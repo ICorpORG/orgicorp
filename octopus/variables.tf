@@ -6,8 +6,8 @@ variable "OCTOPUS_URL" {
   default     = "http://winsrv-oct1.icorp2.local:8080"
 }
 
-variable "OCTOPUS_ACCESS_TOKEN" {
+variable "OCTOPUS_SERVICE_ACCOUNT_ID" {
   type        = string
-  description = "Short lived Octopus OIDC access token"
+  description = "Octopus OIDC access ID"
   sensitive   = true
 }
