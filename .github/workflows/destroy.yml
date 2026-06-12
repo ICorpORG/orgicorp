@@ -43,6 +43,14 @@ jobs:
           service_account_id: ${{ vars.OCTOPUS_SERVICE_ACCOUNT_ID }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Debug - Check login outputs
+        shell: powershell
+        run: |
+          Write-Host "All step outputs:"
+          Write-Host @"
+          ${{ toJson(steps.octopus_login.outputs) }}
+          "@
+
       - name: Export Terraform variables
         shell: powershell
         working-directory: .
