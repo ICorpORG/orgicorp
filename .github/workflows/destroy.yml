@@ -35,15 +35,15 @@ jobs:
 #          server: ${{ vars.OCTOPUS_URL }}
 #          service_account_id: ${{ vars.OCTOPUS_SERVICE_ACCOUNT_ID }}
 
-      - name: Set Terraform environment
-        shell: pwsh
-        run: |
-          "TF_VAR_OCTOPUS_URL=${{ steps.octopus_login.outputs.server }}" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-          "TF_VAR_OCTOPUS_ACCESS_TOKEN=${{ steps.octopus_login.outputs.access_token }}" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-
       - name: Terraform Init
+        env:
+          TF_VAR_OCTOPUS_URL: ${{ steps.octopus_login.outputs.server }}
+          TF_VAR_OCTOPUS_ACCESS_TOKEN: ${{ steps.octopus_login.outputs.access_token }}
         run: |
           terraform init -reconfigure -no-color
 
       - name: Terraform Destroy
+        env:
+          TF_VAR_OCTOPUS_URL: ${{ steps.octopus_login.outputs.server }}
+          TF_VAR_OCTOPUS_ACCESS_TOKEN: ${{ steps.octopus_login.outputs.access_token }}
         run: terraform destroy -auto-approve -no-color
