@@ -27,9 +27,8 @@ jobs:
       - name: Login to Octopus using GitHub OIDC
         uses: OctopusDeploy/login@v2
         with:
-          server: ${{ vars.OCTOPUS_URL }}
-        #  service_account_id: ${{ vars.OCTOPUS_SERVICE_ACCOUNT_ID }}
-        service_account_id: "b79974ee-4f51-4fa0-aa12-39d6f40dd709"
+          server: ${{ vars.OCTOPUS_URL }}       
+        service_account_id: ${{ vars.OCTOPUS_SERVICE_ACCOUNT_ID }}
 
       - name: Terraform Init
         run: |

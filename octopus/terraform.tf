@@ -13,4 +13,5 @@ terraform {
 
 provider "octopusdeploy" {
   address = var.OCTOPUS_URL  
+  access_token = var.OCTOPUS_ACCESS_TOKEN
 }
