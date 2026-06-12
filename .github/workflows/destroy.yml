@@ -12,9 +12,6 @@ jobs:
     name: Octopus Destroy
     runs-on: self-hosted
 
-    env:
-      TF_VAR_OCTOPUS_URL: ${{ vars.OCTOPUS_URL }}
-
     defaults:
       run:
         working-directory: octopus
@@ -30,22 +27,32 @@ jobs:
           server: ${{ vars.OCTOPUS_URL }}
           service_account_id: ${{ vars.OCTOPUS_SERVICE_ACCOUNT_ID }}
 
-      - name: Confirm Octopus token output exists
+      - name: Create temporary Terraform vars file
         shell: powershell
         run: |
-          if ([string]::IsNullOrWhiteSpace("${{ steps.octopus_login.outputs.access_token }}")) {
+          $accessToken = "${{ steps.octopus_login.outputs.access_token }}"
+
+          if ([string]::IsNullOrWhiteSpace($accessToken)) {
             throw "OctopusDeploy/login did not return an access_token output"
           }
-          Write-Host "Octopus access token output exists"
+
+          $vars = @{
+            OCTOPUS_URL = "${{ vars.OCTOPUS_URL }}"
+            OCTOPUS_ACCESS_TOKEN = $accessToken
+          }
+
+          $vars | ConvertTo-Json | Set-Content -Path "oidc.auto.tfvars.json"
 
       - name: Terraform Init
         run: terraform init -upgrade -reconfigure -input=false -no-color
 
       - name: Terraform Destroy
+        run: terraform destroy -auto-approve -input=false -no-color
+
+      - name: Remove temporary Terraform vars file
+        if: always()
         shell: powershell
         run: |
-          terraform destroy `
-            -auto-approve `
-            -input=false `
-            -no-color `
-            -var "OCTOPUS_ACCESS_TOKEN=${{ steps.octopus_login.outputs.access_token }}"
+          if (Test-Path "oidc.auto.tfvars.json") {
+            Remove-Item "oidc.auto.tfvars.json" -Force
+          }
