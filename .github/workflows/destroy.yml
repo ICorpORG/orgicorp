@@ -28,7 +28,12 @@ jobs:
         uses: OctopusDeploy/login@v2
         with:
           server: ${{ vars.OCTOPUS_URL }}       
-        service_account_id: ${{ vars.OCTOPUS_SERVICE_ACCOUNT_ID }}
+          service_account_id: ${{ vars.OCTOPUS_SERVICE_ACCOUNT_ID }}
+
+      - name: Set terraform Octopus access token
+        shell: powershell
+        run: |
+          "TF_VAR_OCTOPUS_ACCESS_TOKEN=${{ steps.login_to_octopus.access_token }}" | Out-File -FilePath $env:GITHUB_ENV -Append
 
       - name: Terraform Init
         run: |
