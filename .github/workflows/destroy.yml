@@ -24,26 +24,21 @@ jobs:
         uses: actions/checkout@v5
 
       - name: Login to Octopus using GitHub OIDC
-        id: login_to_octopus
         uses: OctopusDeploy/login@v2
         with:
           server: ${{ vars.OCTOPUS_URL }}
           service_account_id: ${{ vars.OCTOPUS_SERVICE_ACCOUNT_ID }}
 
-      - name: Check login output exists
+      - name: Confirm Octopus token environment exists
         shell: powershell
         run: |
-          if ([string]::IsNullOrWhiteSpace("${{ steps.login_to_octopus.outputs.access_token }}")) {
-            throw "OctopusDeploy/login did not return access_token"
+          if ([string]::IsNullOrWhiteSpace($env:OCTOPUS_ACCESS_TOKEN)) {
+            throw "OCTOPUS_ACCESS_TOKEN was not set by OctopusDeploy/login"
           }
-          Write-Host "Octopus access token was returned"
+          Write-Host "OCTOPUS_ACCESS_TOKEN is present"
 
       - name: Terraform Init
-        env:
-          TF_VAR_OCTOPUS_ACCESS_TOKEN: ${{ steps.login_to_octopus.outputs.access_token }}
-        run: terraform init -reconfigure -input=false -no-color
+        run: terraform init -upgrade -reconfigure -input=false -no-color
 
       - name: Terraform Destroy
-        env:
-          TF_VAR_OCTOPUS_ACCESS_TOKEN: ${{ steps.login_to_octopus.outputs.access_token }}
         run: terraform destroy -auto-approve -input=false -no-color
