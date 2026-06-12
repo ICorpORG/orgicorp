@@ -8,21 +8,19 @@ on:
 
 jobs:
   terraform-destroy:
-     name: Octopus Destroy
-     runs-on: self-hosted
-     env:
+    name: Octopus Destroy
+    runs-on: self-hosted
+    permissions:
+      id-token: write
+      contents: read
+    env:
       TF_VAR_OCTOPUS_URL: ${{ vars.OCTOPUS_URL }}
       TF_VAR_OCTOPUS_ACCESS_TOKEN: ${{ steps.octopus_login.outputs.access_token }}
-     defaults:
+    defaults:
       run:
-         working-directory: octopus
+        working-directory: octopus
 
-      permissions:
-        id-token: write
-        contents: read
-
-
-     steps:
+    steps:
       - name: Checkout
         uses: actions/checkout@v5
 
