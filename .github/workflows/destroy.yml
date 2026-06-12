@@ -36,14 +36,14 @@ jobs:
 #          service_account_id: ${{ vars.OCTOPUS_SERVICE_ACCOUNT_ID }}
 
       - name: Terraform Init
-        env:
+#        env:
 #          TF_VAR_OCTOPUS_URL: ${{ steps.octopus_login.outputs.server }}
 #          TF_VAR_OCTOPUS_ACCESS_TOKEN: ${{ steps.octopus_login.outputs.access_token }}
         run: |
           terraform init -reconfigure -no-color
 
       - name: Terraform Destroy
-        env:
+#        env:
 #          TF_VAR_OCTOPUS_URL: ${{ steps.octopus_login.outputs.server }}
 #          TF_VAR_OCTOPUS_ACCESS_TOKEN: ${{ steps.octopus_login.outputs.access_token }}
         run: terraform destroy -auto-approve -no-color
