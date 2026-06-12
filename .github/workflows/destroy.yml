@@ -1,8 +1,6 @@
-# This is a basic workflow to help you get started with Actions
-
 name: terraformoctopus destroy
 
-on: 
+on:
   workflow_dispatch:
 
 permissions:
@@ -11,33 +9,41 @@ permissions:
 
 jobs:
   terraform-destroy:
-     name: Octopus Destroy
-     runs-on: self-hosted
-     env:
+    name: Octopus Destroy
+    runs-on: self-hosted
+
+    env:
       TF_VAR_OCTOPUS_URL: ${{ vars.OCTOPUS_URL }}
 
-     defaults:
+    defaults:
       run:
-         working-directory: octopus
+        working-directory: octopus
 
-     steps:
+    steps:
       - name: Checkout
         uses: actions/checkout@v5
 
       - name: Login to Octopus using GitHub OIDC
+        id: login_to_octopus
         uses: OctopusDeploy/login@v2
         with:
-          server: ${{ vars.OCTOPUS_URL }}       
+          server: ${{ vars.OCTOPUS_URL }}
           service_account_id: ${{ vars.OCTOPUS_SERVICE_ACCOUNT_ID }}
 
-      - name: Set terraform Octopus access token
+      - name: Check login output exists
         shell: powershell
         run: |
-          "TF_VAR_OCTOPUS_ACCESS_TOKEN=${{ steps.login_to_octopus.access_token }}" | Out-File -FilePath $env:GITHUB_ENV -Append
+          if ([string]::IsNullOrWhiteSpace("${{ steps.login_to_octopus.outputs.access_token }}")) {
+            throw "OctopusDeploy/login did not return access_token"
+          }
+          Write-Host "Octopus access token was returned"
 
       - name: Terraform Init
-        run: |
-          terraform init -reconfigure -no-color
+        env:
+          TF_VAR_OCTOPUS_ACCESS_TOKEN: ${{ steps.login_to_octopus.outputs.access_token }}
+        run: terraform init -reconfigure -input=false -no-color
 
       - name: Terraform Destroy
-        run: terraform destroy -auto-approve -no-color
+        env:
+          TF_VAR_OCTOPUS_ACCESS_TOKEN: ${{ steps.login_to_octopus.outputs.access_token }}
+        run: terraform destroy -auto-approve -input=false -no-color
