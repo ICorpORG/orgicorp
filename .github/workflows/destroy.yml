@@ -1,6 +1,8 @@
+# This is a basic workflow to help you get started with Actions
+
 name: terraformoctopus destroy
 
-on:
+on: 
   workflow_dispatch:
 
 permissions:
@@ -9,39 +11,18 @@ permissions:
 
 jobs:
   terraform-destroy:
-    name: Octopus Destroy
-    runs-on: self-hosted
-
-    defaults:
+     name: Octopus Destroy
+     runs-on: self-hosted
+     env:
+      TF_VAR_OCTOPUS_URL: ${{ vars.OCTOPUS_URL }}
+      TF_VAR_OCTOPUS_ACCESS_TOKEN: ${{ steps.octopus_login.outputs.access_token }}
+     defaults:
       run:
-        working-directory: octopus
-        shell: powershell
+         working-directory: octopus
 
-    steps:
+     steps:
       - name: Checkout
         uses: actions/checkout@v5
-
-      - name: Show workflow and Terraform files
-        shell: powershell
-        working-directory: .
-        run: |
-          Write-Host "Workspace: $env:GITHUB_WORKSPACE"
-          Write-Host "Ref: $env:GITHUB_REF"
-          Write-Host "SHA: $env:GITHUB_SHA"
-
-          Write-Host "Workflow files:"
-          Get-ChildItem ".github\workflows" | Select-Object Name, FullName
-
-          Write-Host "Terraform files:"
-          Get-ChildItem "octopus" | Select-Object Name, FullName
-
-      - name: Request GitHub OIDC token
-        id: github_oidc
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const token = await core.getIDToken('https://octopus.example.com');
-            core.setOutput('oidc_token', token);
 
       - name: Login to Octopus using GitHub OIDC
         id: octopus_login
@@ -49,61 +30,10 @@ jobs:
         with:
           server: ${{ vars.OCTOPUS_URL }}
           service_account_id: ${{ vars.OCTOPUS_SERVICE_ACCOUNT_ID }}
-          token: ${{ steps.github_oidc.outputs.oidc_token }}
-
-      - name: Debug - Check login outputs
-        shell: powershell
-        run: |
-          Write-Host "All step outputs:"
-          Write-Host @"
-          ${{ toJson(steps.octopus_login.outputs) }}
-          "@
-          
-          Write-Host "Environment variables:"
-          Get-ChildItem env: | Where-Object { $_.Name -like "*OCTOPUS*" } | Format-Table Name, Value
-
-      - name: Export Terraform variables
-        shell: powershell
-        working-directory: .
-        run: |
-          $accessToken = '${{ steps.octopus_login.outputs.access_token }}'
-          $octopusUrl = '${{ vars.OCTOPUS_URL }}'
-
-          Write-Host "Access Token length: $($accessToken.Length)"
-          Write-Host "Octopus URL: $octopusUrl"
-
-          if ([string]::IsNullOrWhiteSpace($accessToken)) {
-            Write-Host "WARNING: access_token is empty, checking environment..."
-            Get-ChildItem env: | Where-Object { $_.Name -like "*OCTOPUS*" -or $_.Name -like "*TF*" } | Format-Table Name, Value
-            throw "OctopusDeploy/login did not return an access_token output"
-          }
-
-          # Export variables to GITHUB_ENV
-          "TF_VAR_OCTOPUS_URL=$octopusUrl" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
-          "TF_VAR_OCTOPUS_ACCESS_TOKEN=$accessToken" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
-
-          Write-Host "Exported TF_VAR_OCTOPUS_URL to GITHUB_ENV"
-          Write-Host "Exported TF_VAR_OCTOPUS_ACCESS_TOKEN to GITHUB_ENV"
-          
-          Write-Host "GITHUB_ENV contents:"
-          Get-Content $env:GITHUB_ENV
-
-      - name: Confirm Terraform variables exist
-        shell: powershell
-        working-directory: octopus
-        run: |
-          if ([string]::IsNullOrWhiteSpace($env:TF_VAR_OCTOPUS_URL)) {
-            throw "TF_VAR_OCTOPUS_URL is missing"
-          }
-
-          if ([string]::IsNullOrWhiteSpace($env:TF_VAR_OCTOPUS_ACCESS_TOKEN)) {
-            throw "TF_VAR_OCTOPUS_ACCESS_TOKEN is missing"
-          }
-
-          Write-Host "Terraform variables are present"
-
+         
       - name: Terraform Init
-        run: terraform init -reconfigure -input=false -no-color
+        run: |
+          terraform init -reconfigure -no-color
 
       - name: Terraform Destroy
-        run: terraform destroy -auto-approve -input=false -no-color
+        run: terraform destroy -auto-approve -no-color
