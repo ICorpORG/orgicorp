@@ -14,7 +14,7 @@ jobs:
       id-token: write
       contents: read
     env:
-      TF_VAR_OCTOPUS_SERVICE_ACCOUNT_ID: ${{ vars.OCTOPUS_SERVICE_ACCOUNT_ID }}     
+      TF_VAR_OCTOPUS_URL: ${{ vars.OCTOPUS_URL }}
     defaults:
       run:
         working-directory: octopus
@@ -38,8 +38,12 @@ jobs:
 #          service_account_id: ${{ vars.OCTOPUS_SERVICE_ACCOUNT_ID }}
          
       - name: Terraform Init
+        env:
+          TF_VAR_OCTOPUS_ACCESS_TOKEN: ${{ steps.octopus_login.outputs.access_token }}
         run: |
           terraform init -reconfigure -no-color
 
       - name: Terraform Destroy
+        env:
+          TF_VAR_OCTOPUS_ACCESS_TOKEN: ${{ steps.octopus_login.outputs.access_token }}
         run: terraform destroy -auto-approve -no-color
